@@ -1,18 +1,20 @@
 <template>
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
+    <button @click="testError">err</button>
   </div>
 </template>
 
 <script lang="ts">
+import * as Sentry from "@sentry/vue";
 import { defineComponent } from "vue";
-import HelloWorld from "@/components/HelloWorld.vue"; // @ is an alias to /src
-
 export default defineComponent({
   name: "Home",
-  components: {
-    HelloWorld,
+  methods: {
+    testError() {
+      Sentry.captureMessage("Something went wrong");
+      // Sentry.init({ sampleRate: 0.25 });
+    },
   },
 });
 </script>

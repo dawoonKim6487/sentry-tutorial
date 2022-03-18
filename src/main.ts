@@ -15,12 +15,16 @@ app.use(store);
 app.use(router);
 app.mount("#app");
 
-// Sentry.setUser({ username: "dawoon-test" });
 Sentry.setContext('사용자 정보', { username: "dawoon" });
 Sentry.setTag("global-tag", "전역태그");
 Sentry.init({
     app,
+    debug: true,
     dsn: "https://62285895ced74365ab5d72a54f51c2f2@o1168882.ingest.sentry.io/6261157",
+    initialScope: {
+        tags: { "my-tag": "테스트" },
+        user: { name: "dawoon", id: 'ws_05000', prefix: "w2021" },
+    },
     integrations: [
         new BrowserTracing({
             routingInstrumentation: Sentry.vueRouterInstrumentation(router),

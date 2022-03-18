@@ -31,24 +31,39 @@ export default defineComponent({
         limit: 10,
         pageNum: 1,
       };
-      try {
-        const getData = await axios.post(
-          "https://tapi.wssw.kr/item",
-          { test: { test: 123 } },
-          {
+      const test = {
+        test: 123,
+      };
+      const testPromise = () => {
+        return axios
+          .get("https://tapi.wssw.kr/item", {
             params,
-          }
-        );
-        console.log(getData);
-        // throw Error();
-      } catch (err) {
-        Sentry.captureException(err, (scope) => {
-          scope.setExtras({
-            params,
+          })
+          .catch((err) => {
+            console.log(err);
+            Sentry.captureException(err, (scope) => {
+              scope.setExtras({
+                body: test,
+                params,
+              });
+              return scope;
+            });
           });
-          return scope;
-        });
-      }
+      };
+
+      testPromise().then((res) => {
+        console.log(res);
+      });
+
+      // throw Error();
+      // } catch (err) {
+      //   Sentry.captureException(err, (scope) => {
+      //     scope.setExtras({
+      //       params,
+      //     });
+      //     return scope;
+      //   });
+      // }
     },
   },
 });

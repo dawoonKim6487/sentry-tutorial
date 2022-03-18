@@ -12,7 +12,6 @@ export default defineComponent({
   name: "Home",
   methods: {
     testError(message: string) {
-      Sentry.setUser({ username: "dawoon-test" });
       console.log("이것도 확인가능");
       Sentry.captureEvent({
         message,

@@ -15,7 +15,8 @@ app.use(store);
 app.use(router);
 app.mount("#app");
 
-Sentry.setUser({ username: "전역 dawoon-test" });
+// Sentry.setUser({ username: "dawoon-test" });
+Sentry.setContext('사용자 정보', { username: "dawoon" });
 Sentry.setTag("global-tag", "전역태그");
 Sentry.init({
     app,

@@ -25,24 +25,26 @@ export default defineComponent({
       // Sentry.init({ sampleRate: 0.25 });
     },
     async promiseError() {
+      const params = {
+        user_code: "ws_05000",
+        table_prefix: "w2021",
+        limit: 10,
+        pageNum: 1,
+      };
       try {
-        const getData = await axios.get("https://tapi.wssw.kr/item", {
-          params: {
-            user_code: "ws_05000",
-            table_prefix: "w2021",
-            limit: 10,
-            pageNum: 1,
-          },
-        });
+        const getData = await axios.post(
+          "https://tapi.wssw.kr/item",
+          { test: { test: 123 } },
+          {
+            params,
+          }
+        );
         console.log(getData);
         // throw Error();
       } catch (err) {
-        console.error(err);
         Sentry.captureException(err, (scope) => {
-          scope.setTag("test", "test2");
           scope.setExtras({
-            test: "123",
-            에러정보: "에러에러",
+            params,
           });
           return scope;
         });

@@ -26,16 +26,18 @@ export default defineComponent({
     },
     async promiseError() {
       try {
-        throw Error();
+        const getData = await axios.get("https://tapi.wssw.kr/item", {
+          params: {
+            user_code: "ws_05000",
+            table_prefix: "w2021",
+            limit: 10,
+            pageNum: 1,
+          },
+        });
+        console.log(getData);
+        // throw Error();
       } catch (err) {
         console.error(err);
-        // Sentry.captureEvent({
-        //   message: "test",
-        //   extra: {
-        //     에러정보담기: "캡처 이벤트",
-        //     userId: "유저 정보 담을 수 있음",
-        //   },
-        // });
         Sentry.captureException(err, (scope) => {
           scope.setTag("test", "test2");
           scope.setExtras({

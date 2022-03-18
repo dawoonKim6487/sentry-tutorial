@@ -24,9 +24,8 @@ Sentry.init({
             tracingOrigins: ["localhost", /^\//],
         }),
     ],
-    // Set tracesSampleRate to 1.0 to capture 100%
-    // of transactions for performance monitoring.
-    // We recommend adjusting this value in production
     tracesSampleRate: 1.0,
+    release: "sentry-test 1.0", // 현재 릴리즈 버전 env 사용하면 될듯
+    environment: "develope" // 환경 설정 개발 환경인지 상용인지 env로 판단가능할듯 
 });
 

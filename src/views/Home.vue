@@ -1,7 +1,7 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <button @click="testError">err</button>
+    <button @click="testError('유저 아이디 확인')">기본 에러</button>
+    <button @click="testError('test2')">기본 에러</button>
   </div>
 </template>
 
@@ -11,8 +11,16 @@ import { defineComponent } from "vue";
 export default defineComponent({
   name: "Home",
   methods: {
-    testError() {
-      Sentry.captureMessage("Something went wrong");
+    testError(message: string) {
+      Sentry.setUser({ username: "dawoon-test" });
+      console.log("이것도 확인가능");
+      Sentry.captureEvent({
+        message,
+        extra: {
+          에러정보담기: "포맷은 자유로움",
+          userId: "유저 정보 담을 수 있음",
+        },
+      });
       // Sentry.init({ sampleRate: 0.25 });
     },
   },

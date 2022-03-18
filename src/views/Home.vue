@@ -1,18 +1,20 @@
 <template>
   <div class="home">
-    <button @click="testError('유저 아이디 확인')">기본 에러</button>
-    <button @click="testError('test2')">기본 에러</button>
+    <button @click="testError('태그 이벤트')">기본 에러</button>
+    <button @click="promiseError">강제 에러</button>
   </div>
 </template>
 
 <script lang="ts">
 import * as Sentry from "@sentry/vue";
+import axios from "axios";
 import { defineComponent } from "vue";
 export default defineComponent({
   name: "Home",
   methods: {
     testError(message: string) {
       console.log("이것도 확인가능");
+      Sentry.setTag("local-tag", "로컬태그");
       Sentry.captureEvent({
         message,
         extra: {
@@ -21,6 +23,28 @@ export default defineComponent({
         },
       });
       // Sentry.init({ sampleRate: 0.25 });
+    },
+    async promiseError() {
+      try {
+        throw Error();
+      } catch (err) {
+        console.error(err);
+        // Sentry.captureEvent({
+        //   message: "test",
+        //   extra: {
+        //     에러정보담기: "캡처 이벤트",
+        //     userId: "유저 정보 담을 수 있음",
+        //   },
+        // });
+        Sentry.captureException(err, (scope) => {
+          scope.setTag("test", "test2");
+          scope.setExtras({
+            test: "123",
+            에러정보: "에러에러",
+          });
+          return scope;
+        });
+      }
     },
   },
 });

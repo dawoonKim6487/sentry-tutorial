@@ -16,7 +16,7 @@ app.use(router);
 app.mount("#app");
 
 Sentry.setUser({ username: "전역 dawoon-test" });
-
+Sentry.setTag("global-tag", "전역태그");
 Sentry.init({
     app,
     dsn: "https://62285895ced74365ab5d72a54f51c2f2@o1168882.ingest.sentry.io/6261157",
